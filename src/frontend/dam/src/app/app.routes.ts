@@ -11,7 +11,13 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'dispositivo',
+    path: 'dispositivos',
+    //loadComponent: () => import('./dispositivo/dispositivo.page').then( m => m.DispositivoPage)
+    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+  },
+  {
+    path: 'dispositivos/:id',
     loadComponent: () => import('./dispositivo/dispositivo.page').then( m => m.DispositivoPage)
   },
+
 ];

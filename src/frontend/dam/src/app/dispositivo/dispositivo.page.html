@@ -10,4 +10,51 @@
       <ion-title size="large">dispositivo</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{dispositivo.nombre}}</ion-card-title>
+      <ion-card-subtitle><b>Ubicación:</b> {{dispositivo.ubicacion}}</ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      Acá se debe mostrar la lectura del sensor
+    </ion-card-content>
+    <ion-grid >
+      <!-- Primera fila: etiquetas -->
+      <ion-row>
+        <ion-col>
+          <label>Electroválvula  </label> <!--<label>{{ label }}</label>-->
+        <!--
+        </ion-col>
+        <ion-col>
+        -->
+          <label>Mediciones  </label>
+        <!--
+        </ion-col>
+        <ion-col>
+        -->
+          <!-- Vacía para el botón volver -->
+          <label> </label>
+        </ion-col>
+
+      </ion-row>
+      <!-- Segunda fila: botones -->
+      <ion-row>
+        <ion-col>
+          <ion-button [color]="buttonColor" (click)="toggleButton()" style="--ion-color-contrast: white !important;">{{ buttonText }}</ion-button>
+        <!--
+        </ion-col>
+        <ion-col>
+        -->
+          <ion-button>Lista</ion-button>
+        <!--
+        </ion-col>
+        <ion-col>
+        -->
+          <ion-button fill="clear" (click)="goBack()">Volver</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+  </ion-card>
 </ion-content>

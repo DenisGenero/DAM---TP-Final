@@ -1,19 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Denis
+      Sistema IoT de sensores de riego
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
+<!--ariaCurrentWhenActive collapse="condense"-->
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Lista de dispositivos</ion-title>
-    </ion-toolbar>
+  <ion-header >
+    <br>
+    <br>
+    <ion-title size="large">Lista de dispositivos</ion-title>
   </ion-header>
-
   <div id="container">
-    
+    <ion-list>
+      <ion-item *ngFor="let dispositivo of dispositivos">
+        <a [routerLink]="'/dispositivos/' + dispositivo.dispositivoId"
+        appHoverEffect
+         routerLinkActive="active" aria-current="page">{{dispositivo.dispositivoId}}- {{dispositivo.nombre}}, {{dispositivo.ubicacion}}</a>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
