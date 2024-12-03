@@ -17,4 +17,12 @@ export class DispositivoService {
   getDispositivo (id: number) {
     return firstValueFrom(this._http.get(`http://localhost:8000/dispositivo/${id}`))
   }
+
+  getMediciones(id: number) {
+    return firstValueFrom(this._http.get(`http://localhost:8000/dispositivo/${id}/mediciones`))
+  }
+
+  postMediciones(id: number, body: any){
+    return firstValueFrom(this._http.post(`http://localhost:8000/dispositivo/${id}/valvula`, body))
+  }
 }

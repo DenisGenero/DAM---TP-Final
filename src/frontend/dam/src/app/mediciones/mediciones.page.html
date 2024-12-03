@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mediciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mediciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Mediciones del dispositivo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let medicion of mediciones">
+          <ion-label>
+            <h3>Fecha: {{ medicion.fecha | fechaHora:'fecha' }}</h3>
+            <p>Hora: {{ medicion.fecha | fechaHora:'hora' }}</p>
+            <p>Humedad: {{ medicion.valor }}%</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+      <p *ngIf="!mediciones?.length">No hay mediciones disponibles</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button fill="clear" (click)="goBack()" strong="true">Volver</ion-button>
+</ion-content>

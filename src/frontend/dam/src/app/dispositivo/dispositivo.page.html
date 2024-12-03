@@ -17,44 +17,16 @@
     </ion-card-header>
   
     <ion-card-content>
-      Acá se debe mostrar la lectura del sensor
+      <p><b>Última lectura de humedad (%):</b> {{ ultimaMedicion?.valor || 'No disponible' }}</p>
+      <!-- Uso del pipe custom -->
+      <p><b>Fecha:</b> {{ ultimaMedicion?.fecha | fechaHora:'fecha' }}</p>
+      <p><b>Hora:</b> {{ ultimaMedicion?.fecha | fechaHora:'hora' }}</p>
+      <!-- ################### -->
     </ion-card-content>
-    <ion-grid >
-      <!-- Primera fila: etiquetas -->
-      <ion-row>
-        <ion-col>
-          <label>Electroválvula  </label> <!--<label>{{ label }}</label>-->
-        <!--
-        </ion-col>
-        <ion-col>
-        -->
-          <label>Mediciones  </label>
-        <!--
-        </ion-col>
-        <ion-col>
-        -->
-          <!-- Vacía para el botón volver -->
-          <label> </label>
-        </ion-col>
-
-      </ion-row>
-      <!-- Segunda fila: botones -->
-      <ion-row>
-        <ion-col>
-          <ion-button [color]="buttonColor" (click)="toggleButton()" style="--ion-color-contrast: white !important;">{{ buttonText }}</ion-button>
-        <!--
-        </ion-col>
-        <ion-col>
-        -->
-          <ion-button>Lista</ion-button>
-        <!--
-        </ion-col>
-        <ion-col>
-        -->
-          <ion-button fill="clear" (click)="goBack()">Volver</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    
+      <ion-button [color]="buttonColor" (click)="toggleButton(dispositivo.dispositivoId)" style="--ion-color-contrast: white !important;">{{ buttonText }}</ion-button>
+      <ion-button [routerLink]="['mediciones']" color="tertiary" style="--ion-color-contrast: white !important;">
+        Mediciones
+      </ion-button>
+      <ion-button fill="clear" (click)="goBack()" strong="true">Volver</ion-button>
   </ion-card>
 </ion-content>
