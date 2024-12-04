@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Dispositivo } from '../interfaces/dispositivo';
+import { Dispositivo, Electrovalvula, Mediciones } from '../interfaces/dispositivo';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +10,16 @@ export class DispositivoService {
 
   constructor(private _http: HttpClient) { }
 
-  getDispositivos () {
-    return firstValueFrom(this._http.get('http://localhost:8000/dispositivo'))
+  getDispositivos (): Promise<Dispositivo[]> {
+    return firstValueFrom(this._http.get<Dispositivo[]>('http://localhost:8000/dispositivo'))
   }
 
-  getDispositivo (id: number) {
-    return firstValueFrom(this._http.get(`http://localhost:8000/dispositivo/${id}`))
+  getDispositivo (id: number): Promise<{dispositivo: Dispositivo, medicion: Mediciones}> {
+    return firstValueFrom(this._http.get<{dispositivo: Dispositivo, medicion: Mediciones}>(`http://localhost:8000/dispositivo/${id}`))
   }
 
-  getMediciones(id: number) {
-    return firstValueFrom(this._http.get(`http://localhost:8000/dispositivo/${id}/mediciones`))
+  getMediciones(id: number): Promise<Mediciones[]>{
+    return firstValueFrom(this._http.get<Mediciones[]>(`http://localhost:8000/dispositivo/${id}/mediciones`))
   }
 
   postMediciones(id: number, body: any){

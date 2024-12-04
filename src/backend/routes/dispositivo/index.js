@@ -4,8 +4,9 @@ const routerDispositivo = express.Router()
 
 var pool = require('../../mysql-connector');
 
+// Consulta por todos los dispositivos
 routerDispositivo.get('/', function(req, res) {
-    pool.query('SELECT * FROM Dispositivos', function(err, result, fields) {
+    pool.query('SELECT * FROM Dispositivos', function(err, result) {
         if (err) {
             res.send(err).status(400);
             return;
@@ -14,15 +15,17 @@ routerDispositivo.get('/', function(req, res) {
     });
 })
 
+// Consulta por un sensor en particular y la última medición asociada
 routerDispositivo.get('/:id', function(req, res) {
-    const dispositivoId = req.params.id; // Obtener el ID de los parámetros de la URL
+    // Obtener el ID de los parámetros de la URL
+    const dispositivoId = req.params.id;
 
     const query = `
         SELECT 
             d.*, 
             m.medicionId, 
-            m.fecha AS ultimaMedicionFecha, 
-            m.valor AS ultimaMedicionValor
+            m.fecha AS fecha, 
+            m.valor AS humedad
         FROM 
             Dispositivos d
         LEFT JOIN 
@@ -48,53 +51,27 @@ routerDispositivo.get('/:id', function(req, res) {
             return;
         }
 
-        res.send(result[0]); // Enviar solo el primer resultado (el dispositivo con la última medición)
+        const dispositivo = {
+            dispositivoId: result[0].dispositivoId,
+            nombre: result[0].nombre,
+            ubicacion: result[0].ubicacion,
+            electrovalvulaId: result[0].electrovalvulaId,
+        };
+
+        const medicion = {
+            medicionId: result[0].medicionId,
+            fecha: result[0].fecha,
+            humedad: result[0].humedad,
+        };
+
+        res.send({
+            dispositivo: dispositivo,
+            medicion: medicion
+        });
     });
 });
 
-/*
-routerDispositivo.get('/:id', function(req, res) {
-    const dispositivoId = req.params.id;
-
-    const query = `
-        SELECT 
-            d.*, 
-            m.medicionId, 
-            m.fecha AS ultimaMedicionFecha, 
-            m.valor AS ultimaMedicionValor,
-            lr.apertura AS ultimaApertura
-        FROM 
-            Dispositivos d
-        LEFT JOIN 
-            Mediciones m 
-        ON 
-            d.dispositivoId = m.dispositivoId
-        LEFT JOIN 
-            Log_Riegos lr
-        ON 
-            d.dispositivoId = lr.electrovalvulaId
-        WHERE 
-            d.dispositivoId = ?
-        ORDER BY 
-            lr.fecha DESC, m.fecha DESC
-        LIMIT 1;
-    `;
-
-    pool.query(query, [dispositivoId], function(err, result) {
-        if (err) {
-            res.status(400).send(err);
-            return;
-        }
-
-        if (result.length === 0) {
-            res.status(404).send({ message: 'Dispositivo no encontrado' });
-            return;
-        }
-
-        res.send(result[0]); // Enviar solo el primer resultado
-    });
-});*/
-
+// Consultar las mediciones asociadas a un sensor
 routerDispositivo.get('/:id/mediciones', (req, res) => {
     const dispositivoId = parseInt(req.params.id);
 
@@ -114,17 +91,18 @@ routerDispositivo.get('/:id/mediciones', (req, res) => {
     });
 });
 
+// Registrar apertura de válvula y la medición del sensor
 routerDispositivo.post('/:id/valvula', (req, res) => {
     const electrovalvulaId = parseInt(req.params.id);
 
     if (isNaN(electrovalvulaId)) {
         return res.status(400).send('ID de electroválvula no válido');
     }
-    console.log("apertura antes:", req.body.apertura)
     const apertura = req.body.apertura ? 1 : 0;
-    console.log("apertura después:", apertura)
-    const fechaHora = new Date(); // Timestamp actual
-    const humedad = String(Math.round(Math.random() * 100)); // Humedad aleatoria entre 0 y 100: se pasa a entero y luego a string
+    // Timestamp actual
+    const fechaHora = new Date();
+    // Humedad aleatoria entre 0 y 100: se pasa a entero y luego a string
+    const humedad = String(Math.round(Math.random() * 100)); 
 
     // Inserción en Log_Riegos
     pool.query(
@@ -148,15 +126,15 @@ routerDispositivo.post('/:id/valvula', (req, res) => {
             );
         }
     );
-    
 });
 
+// Consultar el estado de la electroválvula
 routerDispositivo.get('/:id/valvula/:id', (req, res) => {
     const electrovalvulaId = parseInt(req.params.id);
     if (isNaN(electrovalvulaId)) {
       return res.status(400).send('ID de electroválvula no válido');
     }
-  
+
     pool.query(
       'SELECT apertura FROM Log_Riegos WHERE electrovalvulaId = ? ORDER BY fecha DESC LIMIT 1',
       [electrovalvulaId],
@@ -165,13 +143,11 @@ routerDispositivo.get('/:id/valvula/:id', (req, res) => {
           console.error(error);
           res.status(500).send('Error al obtener el estado de la electroválvula');
         } else {
-            // Si no hay registros, asumimos que está cerrada (false)
+            // Si no hay registros, se asume que está cerrada (false)
             if (results.length === 0) {
-                // Si no hay registros, asumimos que está cerrada
                 return res.status(200).json({ apertura: 0 });
             }
             // Devuelve el estado actual
-            console.log("Desde el lecturaEV: id=", electrovalvulaId, "apertura=", results[0].apertura)
             res.status(200).json({ apertura: results[0].apertura });
         }
       }

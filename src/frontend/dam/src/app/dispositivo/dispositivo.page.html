@@ -17,10 +17,12 @@
     </ion-card-header>
   
     <ion-card-content>
-      <p><b>Última lectura de humedad (%):</b> {{ ultimaMedicion?.valor || 'No disponible' }}</p>
-      <!-- Uso del pipe custom -->
-      <p><b>Fecha:</b> {{ ultimaMedicion?.fecha | fechaHora:'fecha' }}</p>
-      <p><b>Hora:</b> {{ ultimaMedicion?.fecha | fechaHora:'hora' }}</p>
+      <ion-card-content>
+        <p><b>Última lectura de humedad (%):</b> {{ ultimaMedicion.humedad ? ultimaMedicion.humedad : 'No disponible' }}</p>
+        <!-- Uso del pipe custom -->
+        <p><b>Fecha:</b> {{ ultimaMedicion.fecha ? (ultimaMedicion.fecha | fechaHora:'fecha') : 'No disponible' }}</p>
+        <p><b>Hora:</b> {{ ultimaMedicion.fecha ? (ultimaMedicion.fecha | fechaHora:'hora') : 'No disponible' }}</p>
+      </ion-card-content>
       <!-- ################### -->
     </ion-card-content>
       <ion-button 
@@ -29,9 +31,6 @@
         style="--ion-color-contrast: white !important;">
         {{ apertura ? 'Cerrar EV' : 'Abrir EV' }}
       </ion-button>
-      <!-- 
-      <ion-button [color]="buttonColor" (click)="toggleButton(dispositivo.dispositivoId)" style="--ion-color-contrast: white !important;">{{ buttonText }}</ion-button>
-      -->
       <ion-button [routerLink]="['mediciones']" color="tertiary" style="--ion-color-contrast: white !important;">
         Mediciones
       </ion-button>

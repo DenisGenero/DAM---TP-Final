@@ -17,13 +17,16 @@ import { Dispositivo } from '../interfaces/dispositivo';
 })
 export class HomePage {
   constructor(private _dispositivoService: DispositivoService) {}
-  dispositivos: any
+  dispositivos: Dispositivo[] = []
 
   async ngOnInit() {
-    try {
-      this.dispositivos = await this._dispositivoService.getDispositivos();
-    } catch (error) {
-      console.error('Error al obtener dispositivos:', error);
-    }
+    // Cargar los sensores al iniciar la página
+    await this._dispositivoService.getDispositivos()
+      .then((dispositivos) => {
+        this.dispositivos = dispositivos;
+      })
+      .catch((error) => {
+        console.error('Error al obtener dispositivos:', error);
+      });
   }
 }

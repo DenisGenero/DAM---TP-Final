@@ -29,12 +29,12 @@ export class MedicionesPage implements OnInit {
     private dispositivoService: DispositivoService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const dispositivoId = this.route.snapshot.paramMap.get('id');
     if (dispositivoId) {
-      this.dispositivoService.getMediciones(+dispositivoId)
-        .then((data: any) => {
-          this.mediciones = Array.isArray(data) ? data : [];
+      await this.dispositivoService.getMediciones(+dispositivoId)
+        .then((data) => {
+          this.mediciones = data
         })
         .catch((error) => {
           console.error('Error al obtener mediciones:', error);
@@ -42,7 +42,8 @@ export class MedicionesPage implements OnInit {
     }
   }
 
+  // Regresar a la página anterior
   goBack() {
-    this.navCtrl.back(); // Regresar a la página anterior
+    this.navCtrl.back();
   }
 }
