@@ -23,7 +23,15 @@
       <p><b>Hora:</b> {{ ultimaMedicion?.fecha | fechaHora:'hora' }}</p>
       <!-- ################### -->
     </ion-card-content>
+      <ion-button 
+        [color]="apertura ? 'danger' : 'success'" 
+        (click)="toggleButton(dispositivo.dispositivoId)" 
+        style="--ion-color-contrast: white !important;">
+        {{ apertura ? 'Cerrar EV' : 'Abrir EV' }}
+      </ion-button>
+      <!-- 
       <ion-button [color]="buttonColor" (click)="toggleButton(dispositivo.dispositivoId)" style="--ion-color-contrast: white !important;">{{ buttonText }}</ion-button>
+      -->
       <ion-button [routerLink]="['mediciones']" color="tertiary" style="--ion-color-contrast: white !important;">
         Mediciones
       </ion-button>

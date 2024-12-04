@@ -25,4 +25,8 @@ export class DispositivoService {
   postMediciones(id: number, body: any){
     return firstValueFrom(this._http.post(`http://localhost:8000/dispositivo/${id}/valvula`, body))
   }
+
+  getEstadoElectrovalvula(id: number): Promise<any> {
+    return firstValueFrom(this._http.get<any>(`http://localhost:8000/dispositivo/${id}/valvula/${id}`));
+  }
 }

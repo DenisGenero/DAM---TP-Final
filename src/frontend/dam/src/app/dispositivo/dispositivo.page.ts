@@ -36,7 +36,6 @@ export class DispositivoPage implements OnInit {
     private route: ActivatedRoute,
     private _dispositivoService: DispositivoService,
     private navCtrl: NavController,
-    private http: HttpClient
   ) {}
 
   goBack() {
@@ -45,26 +44,31 @@ export class DispositivoPage implements OnInit {
 
   // Controlador botón electrovalvula
   async toggleButton(id: number) {
-      this.apertura = !this.apertura; // Alternar estado
-
-      // Actualizar color y texto del botón
-      this.buttonText = this.apertura ? 'Cerrar EV' : 'Abrir EV';
-      this.buttonColor = this.apertura ? 'danger' : 'success';
+      await this._dispositivoService.getEstadoElectrovalvula(+id)
+      .then((estado) => {
+        //this.apertura = !!estado;
+        // Invertir el estado
+        console.log("estado en toggle 0:", estado.apertura)
+        this.apertura = estado.apertura? false : true
+      })
+      .catch((error) => {
+        console.error('Error al obtener el estado de la electroválvula:', error);
+      });
   
       // ID de la válvula (dispositivo)
       const electrovalvulaId = id;
       
       // Enviar solicitud al backend
+      console.log("estado en toggle 1:", this.apertura)
       const body = { apertura: this.apertura };
+      console.log("estado en toggle 2:", this.apertura)
       try {
         // Llamar a la función del servicio
         await this._dispositivoService.postMediciones(electrovalvulaId, body);
-        window.location.reload();
-        console.log('Estado de la válvula actualizado correctamente.');
+        console.log('Estado de la válvula actualizado correctamente.', body);
       } catch (error) {
         console.error('Error al actualizar válvula:', error);
       }
-
   }
 
   irAMediciones(dispositivoId: number) {
@@ -75,11 +79,11 @@ export class DispositivoPage implements OnInit {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     // Obtener el ID de la URL
     const id = this.route.snapshot.paramMap.get('id'); 
         if (id) {
-          this._dispositivoService.getDispositivo(+id)
+          await this._dispositivoService.getDispositivo(+id)
             .then((data: any) => {
               this.dispositivo = data; // Guardar el dispositivo obtenido
               this.ultimaMedicion = {
@@ -89,6 +93,17 @@ export class DispositivoPage implements OnInit {
             })
             .catch((error) => {
               console.error('Error al obtener el dispositivo:', error);
+            });
+
+            // Estado de la electrovalvula
+            await this._dispositivoService.getEstadoElectrovalvula(+id)
+            .then((estado) => {
+              this.apertura = estado.apertura? true : false;
+              console.log("estado en init:", estado.apertura)
+              console.log("apertura en init:", this.apertura)
+            })
+            .catch((error) => {
+              console.error('Error al obtener el estado de la electroválvula:', error);
             });
         }
   }

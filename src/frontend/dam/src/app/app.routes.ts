@@ -28,5 +28,9 @@ export const routes: Routes = [
     path: 'dispositivos/:id/valvula', // Ruta para la válvula
     loadComponent: () => import('./dispositivo/dispositivo.page').then( m => m.DispositivoPage)
   },
+  {
+    path: 'dispositivos/:id/valvula/:id',
+    loadComponent: () => import('./dispositivo/dispositivo.page').then( m => m.DispositivoPage)
+  }
 
 ];

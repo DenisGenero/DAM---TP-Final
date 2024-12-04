@@ -22,7 +22,6 @@ export class HomePage {
   async ngOnInit() {
     try {
       this.dispositivos = await this._dispositivoService.getDispositivos();
-      console.log(this.dispositivos.dispositivoId)
     } catch (error) {
       console.error('Error al obtener dispositivos:', error);
     }
