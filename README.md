@@ -40,7 +40,8 @@ A continuación se encuentra una breve descripción del funcionamiento del siste
 ### Página principal 🌐
 En la página principal se muestra un listado de los sensores disponibles, cuyos datos se obtienen a partir de una base de datos. Para mejorar la experiencia de usuario, cada elemento del listado cambia de color a rojo cuando el puntero del mouse pasa sobre él. Esto se logra mediante el uso de una directiva custom diseñada específicamente para este propósito.
 
-Además, cada sensor en el listado incluye información básica como su nombre y estado. (Ver Figura 1)
+Además, cada sensor en el listado incluye información básica como su nombre y estado. (Ver Figura 1)  
+
 ![Figura 1](/imagenes/Figura1.png)
 
 ### Dispositivo 📟
@@ -53,13 +54,15 @@ Si está abierta, el botón será de color rojo y mostrará el texto "Cerrar EV"
 Si está cerrada, el botón será de color verde y mostrará el texto "Abrir EV".  
 Mediciones: Permite acceder al listado completo de las mediciones registradas por el sensor.  
 Volver: Redirige al usuario de vuelta a la página principal con el listado de sensores.  
-(Ver Figura 2)
+(Ver Figura 2)  
+
 ![Figura 2](/imagenes/Figura2.png)
 
 ### Listado de mediciones 📊
 Cuando se hace clic en el botón de mediciones, se abre una nueva página que muestra un listado detallado de todos los registros históricos de lecturas del sensor seleccionado. Cada registro incluye la fecha, hora y valor de humedad, ordenados desde la lectura más reciente hasta la más antigua.  
 
-Debajo del listado se encuentra un botón para volver a la página del sensor correspondiente, facilitando la navegación entre las vistas (Ver Figura 3).
+Debajo del listado se encuentra un botón para volver a la página del sensor correspondiente, facilitando la navegación entre las vistas (Ver Figura 3).  
+
 ![Figura 3](/imagenes/Figura3.png)
 
 Servicios y endpoints (🔗)
