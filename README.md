@@ -65,7 +65,7 @@ Debajo del listado se encuentra un botón para volver a la página del sensor co
 
 ![Figura 3](/imagenes/Figura3.png)
 
-Servicios y endpoints (🔗)
+### Servicios y endpoints (🔗)
 Se creó un servicio (dispositivo.service.ts) que centraliza todas las peticiones hacia la base de datos. A continuación, se describen los endpoints disponibles para la interacción con el backend:
 
 | **Método** | **Endpoint**                          | **Descripción**                                                                                  |
